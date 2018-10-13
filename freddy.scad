@@ -1,9 +1,9 @@
 
 
-//index();
+index();
 
 module index() {
-  printableFinger(24, 23, 33, 21, 16, 50);
+  printableFinger(24, 23, 33, 21, 16, 44);
   //finger(24, 23, 33, 21, 16, 50);
 }
 
@@ -13,6 +13,12 @@ module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDi
   lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
   translate([lowerBottomDiam + 5, 0, 0])
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
+  translate([-40, 30, 0])
+  rotate(90, [0, 0, 1])
+  rotate(-10, [0, 1, 0])
+  rotate(90, [1, 0, 0])
+    claw(upperBottomDiam, upperTopDiam, upperLength);
+
 }
 
 thickness = 1;
@@ -21,9 +27,9 @@ module finger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDiam, upper
   lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
   translate([0, 0, lowerLength - 2* hingeDiam])
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
+  translate([-3, 0, upperLength+2])
+    claw(upperBottomDiam, upperTopDiam, upperLength);
 }
-
-claw(21, 16, 50);
 
 module claw(upperBottomDiam, upperTopDiam, upperLength) {
   difference() {
@@ -86,8 +92,8 @@ module upperFinger(innerBottomDiameter, innerTopDiameter, upperLength, thickness
   // Top sphere
   translate([0, 0, upperLength]) {
     difference() {
-      sphere(d=outerTopDiameter, $fn=100);
-      sphere(d=innerTopDiameter, $fn=100);
+      sphere(d=outerTopDiameter, $fn=50);
+      sphere(d=innerTopDiameter, $fn=50);
       // Cut lower half of sphere
       translate([-outerTopDiameter/2, -outerTopDiameter/2, -outerTopDiameter]) {
         cube(outerTopDiameter);
@@ -110,7 +116,7 @@ module upperFinger(innerBottomDiameter, innerTopDiameter, upperLength, thickness
         hingeLength = 2;
         translate([hingeSide/2, outerBottomDiameter + hingeLength, hingeSide/2]) {
           rotate(90, [1, 0, 0]) {
-            cylinder(d=hinge, h=outerBottomDiameter + hingeLength*2, $fn=100);
+            cylinder(d=hingeDiameter - 0.3, h=outerBottomDiameter + hingeLength*2, $fn=100);
           }
         }
 
