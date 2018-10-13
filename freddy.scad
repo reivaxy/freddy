@@ -1,10 +1,22 @@
 
 
-index();
+//index();
+majeur();
+//annulaire();
+//auriculaire();
 
+module auriculaire() {
+  printableFinger(18, 17, 18, 16, 15, 34);
+}
+module annulaire() {
+  printableFinger(20, 19, 33, 18, 15, 40);
+}
+module majeur() {
+  printableFinger(23, 23, 40, 21, 16, 50);
+}
 module index() {
   printableFinger(24, 23, 33, 21, 16, 44);
-  //finger(24, 23, 33, 21, 16, 50);
+  //finger(24, 23, 33, 21, 16, 44);
 }
 
 module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDiam, upperTopDiam, upperLength) {
@@ -18,7 +30,6 @@ module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDi
   rotate(-10, [0, 1, 0])
   rotate(90, [1, 0, 0])
     claw(upperBottomDiam, upperTopDiam, upperLength);
-
 }
 
 thickness = 1;
@@ -116,7 +127,7 @@ module upperFinger(innerBottomDiameter, innerTopDiameter, upperLength, thickness
         hingeLength = 2;
         translate([hingeSide/2, outerBottomDiameter + hingeLength, hingeSide/2]) {
           rotate(90, [1, 0, 0]) {
-            cylinder(d=hingeDiameter - 0.3, h=outerBottomDiameter + hingeLength*2, $fn=100);
+            cylinder(d=hingeDiameter - 0.5, h=outerBottomDiameter + hingeLength*2, $fn=100);
           }
         }
 
@@ -139,9 +150,9 @@ module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength, thickness
 
     // Rounded cut in cylinder lower half, inner-hand
     color("red")
-    translate([-outerBottomDiameter/2, lowerLength/2, 8 + outerBottomDiameter/2]) {
+    translate([-outerBottomDiameter/2, outerBottomDiameter/2 + 5, lowerLength/5 + outerBottomDiameter/2]) {
       rotate(90, [1, 0, 0]) {
-        cylinder(d = outerBottomDiameter, h = lowerLength, $fn=100);
+        cylinder(d = outerBottomDiameter, h = outerBottomDiameter + 10, $fn=100);
       }
     }
     // Remove cylinder inner-hand upper half
@@ -151,9 +162,9 @@ module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength, thickness
     }
     // Rounded cut in cylinder upper half, outer-hand
     color("yellow")
-    translate([outerTopDiameter/2, lowerLength/2, lowerLength  + hingeDiameter + 2]) {
+    translate([outerTopDiameter/2, outerTopDiameter/2 + 5, lowerLength  + hingeDiameter + 2]) {
       rotate(90, [1, 0, 0]) {
-        cylinder(d = outerTopDiameter, h = lowerLength, $fn=100);
+        cylinder(d = outerTopDiameter, h = outerTopDiameter + 10, $fn=100);
       }
     }
   }
@@ -183,9 +194,9 @@ module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength, thickness
         }
       }
       // Hole for hinges
-      translate([hingeSide/2, outerTopDiameter+1, hingeSide*2 - hingeDiameter]) {
+      translate([hingeSide/2, outerBottomDiameter+1, hingeSide*2 - hingeDiameter]) {
         rotate(90, [1, 0, 0]) {
-          cylinder(d=hingeDiameter, h=outerTopDiameter+2, $fn=100);
+          cylinder(d=hingeDiameter, h=outerBottomDiameter+2, $fn=100);
         }
       }
     }
