@@ -1,9 +1,13 @@
 
 
-//index();
+translate([0, -90, 0])
+index();
+translate([0, -30, 0])
 majeur();
-//annulaire();
-//auriculaire();
+translate([0, 30, 0])
+annulaire();
+translate([0, 90, 0])
+auriculaire();
 
 module auriculaire() {
   printableFinger(18, 17, 18, 16, 15, 34);
@@ -25,7 +29,7 @@ module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDi
   lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
   translate([lowerBottomDiam + 5, 0, 0])
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
-  translate([-40, 30, 0])
+  translate([-40, 15, 0])
   rotate(90, [0, 0, 1])
   rotate(-10, [0, 1, 0])
   rotate(90, [1, 0, 0])
