@@ -1,10 +1,9 @@
 
-//claw();
 
-index();
+//index();
 
 module index() {
-  printableFinger(24, 22, 33, 21, 16, 50);
+  printableFinger(24, 23, 33, 21, 16, 50);
   //finger(24, 23, 33, 21, 16, 50);
 }
 
@@ -16,28 +15,51 @@ module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDi
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
 }
 
+thickness = 1;
+hingeDiam = 3;
 module finger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDiam, upperTopDiam, upperLength) {
-  thickness = 1;
-  hingeDiam = 3;
   lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
   translate([0, 0, lowerLength - 2* hingeDiam])
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
 }
 
-module claw() {
+claw(21, 16, 50);
+
+module claw(upperBottomDiam, upperTopDiam, upperLength) {
   difference() {
-    obus();
-    translate([0, 10, 0])
-      scale([3, 1, 1])
-      obus();
-    //rotate()
+    rotate(90, [0, 0, 1]) {
+      difference() {
+        obus();
+        translate([0, 12, 0])
+          scale([3, 1, 1.09])
+          obus();
+        rotate(10, [0, 0, 1]) {
+          translate([0, -20, 0])
+            cube([20, 40, 150]);
+        }
+        rotate(-10, [0, 0, 1]) {
+          translate([-20, -20, 0])
+            cube([20, 40, 150]);
+        }
+      }
+    }
+    translate([2.6, 0, -upperLength/2]) {
+      outerBottomDiameter = upperBottomDiam + 2* thickness;
+      outerTopDiameter = upperTopDiam + 2* thickness;
+      cylinder(d1 = outerBottomDiameter, d2 = outerTopDiameter, h = upperLength, $fn=50);
+      // Top sphere
+      translate([0, 0, upperLength]) {
+        sphere(d=outerTopDiameter, $fn=50);
+      }
+    }
   }
 }
 
 module obus() {
   scale([1, 2, 1]) {
-    scale([1, 1, 4])
-      sphere(d=15, $fn=100);
+    translate([0, 0, 100])
+      scale([1, 1, 4])
+        sphere(d=15, $fn=100);
     cylinder(d=15, h=100, $fn=100);
   }
 }
