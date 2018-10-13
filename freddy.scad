@@ -2,10 +2,35 @@
 
 
 
-lowerFinger(20, 40, 1, 3);
+//lowerFinger(20, 40, 1, 3);
+upperFinger(18, 14, 50, 1, 3);
 
-module upperFinger(innerDiameter, upperLength, thickness, hingeDiameter) {
+module upperFinger(innerBottomDiameter, innerTopDiameter, upperLength, thickness, hingeDiameter) {
+  outerBottomDiameter = innerBottomDiameter + 2* thickness;
+  outerTopDiameter = innerTopDiameter + 2* thickness;
 
+  difference() {
+    cylinder(d1 = outerBottomDiameter, d2 = outerTopDiameter, h = upperLength, $fn=100);
+    cylinder(d1 = innerBottomDiameter, d2 = innerTopDiameter, h = upperLength, $fn=100);
+    translate([-outerBottomDiameter, -outerBottomDiameter/2, 0]) {
+      cube([outerBottomDiameter, outerBottomDiameter, upperLength - outerBottomDiameter]);
+    }
+    translate([-outerBottomDiameter/2, outerBottomDiameter/2, upperLength - outerBottomDiameter]) {
+      rotate(90, [1, 0, 0]) {
+        cylinder(d=outerBottomDiameter, h=outerBottomDiameter, $fn=100);
+      }
+    }
+
+  }
+  translate([0, 0, upperLength]) {
+    difference() {
+      sphere(d=outerTopDiameter, $fn=100);
+      sphere(d=innerTopDiameter, $fn=100);
+      translate([-outerTopDiameter/2, -outerTopDiameter/2, -outerTopDiameter]) {
+        cube(outerTopDiameter);
+      }
+    }
+  }
 }
 
 
