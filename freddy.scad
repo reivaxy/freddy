@@ -1,3 +1,4 @@
+use <snapButton.scad>;
 
 module fingers() {
   translate([0, -70, 0])
@@ -24,30 +25,56 @@ module index() {
   //finger(24, 23, 33, 21, 16, 44);
 }
 
-//hand();
+hand();
 
 module hand() {
+  handTop();
+  translate([0, -50, 0])
+    join();
+  translate([20, -50, 0])
+    join();
+  translate([40, -50, 0])
+    join();
+  translate([60, -50, 0])
+    join();
+}
+
+module join() {
+  cube([15, 46, 0.3]);
+  translate([6.25, 3])
+    cube([2.5, 2.5, 6]);
+}
+
+module handTop() {
   z = 2;
   zThin = 0.3;
-  A = [0, 45];
+  A = [5, 45];
   B = [23.25, 52];
   C = [46.5, 55];
   D = [69.75, 52];
-  E = [93, 45];
-  F = [75,0];
-  G = [19, 0];
+  E = [90, 45];
+  F = [83,0];
+  G = [10, 0];
   difference() {
     linear_extrude(z)
       polygon([A, B, C, D, E, F, G]);
+
+    // Creases for articulation
     crease(zThin, 1, B, [33, 0]);
     crease(zThin, 1, C, [47, 0]);
     crease(zThin, 1, D, [61, 0]);
+    translate([0, 30, 0])
+      rotate(90, [0, 0, -1])
+        crease(zThin, 1, [0, 0], [0, 100]);
 
-    crease(0, 3, [11.5,44], [17, 35]);
+    // Creases for mobile finger joins
+    crease(0, 3, [14,44], [17, 35]);
     crease(0, 3, [35,48], [38, 37]);
     crease(0, 3, [59,48], [57, 37]);
     crease(0, 3, [81,43], [77, 34]);
   }
+  translate([-60, 15])
+    wristBand(10, 230);
 }
 
 module crease(thin, width, topPoint, bottomPoint) {
@@ -63,21 +90,20 @@ module crease(thin, width, topPoint, bottomPoint) {
 }
 
 
-snapTest();
+// snapTest();
 
 module snapTest() {
-    difference() {
-      union() {
-        cube([80, 10, 0.3]);
-        translate([75, 5, 0])
-          snapButtonMale(10, 1, 3, 3);
-        translate([5, 5, 0]) {
-          snapButtonFemale(10, 1, 3, 3);
-        }
-    }
+  difference() {
+    cube([100, 10, 0.3]);
     translate([5, 5, 0])
-      cylinder(d=3, h=5, $fn=50);
+      cylinder(d=10, h=0.3, $fn=50);
   }
+  translate([95, 5, 0])
+    snapButtonMale(10, 1, 5, 3);
+  translate([5, 5, 0]) {
+    snapButtonFemale(10, 1, 5, 3);
+  }
+
 }
 
 module snapTestOn() {
@@ -91,8 +117,8 @@ module snapTestOn() {
   }
 }
 
-module snapButtonFemale(baseDiam, baseH, pinDiam, pinZ) {
-  tolerance = 0.2;
+// Tolerance 0.2 is tight to the point of not being removable
+module snapButtonFemale(baseDiam, baseH, pinDiam, pinZ, tolerance=0.3) {
   difference() {
     cylinder(d=baseDiam, h=baseH, $fn=50);
     cylinder(d=pinDiam + 2, h=pinZ, $fn=50);
@@ -114,14 +140,12 @@ module snapButtonMale(baseDiam, baseH, pinDiam, pinZ) {
         translate([0, 0, pinZ - 1/2]) {
           rotate_extrude(convexity = 10, $fn=50)
           translate([pinDiam/2, 0, 0])
-          circle(d=1, $fn = 100);
+          circle(d=1, $fn = 50);
         }
       }
       cylinder(d=pinDiam/2, h=pinZ+1, $fn=40);
-      translate([-baseDiam/2, -pinDiam/8, 0])
-        cube([baseDiam, pinDiam/4, pinZ]);
-      translate([-pinDiam/8, -baseDiam/2, 0])
-        cube([pinDiam/4, baseDiam, pinZ]);
+      translate([-baseDiam/2, -0.25, 0])
+        cube([baseDiam, 0.5, pinZ]);
     }
   }
 }
