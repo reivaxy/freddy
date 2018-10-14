@@ -8,4 +8,6 @@ The claws (or blades) should be printed with grey or silver-like filament, and t
 
 Each finger can be easily parametered.
 
-<img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/freddy.jpg" width="500"/>
+<img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/freddy.jpg" width="600"/>
+
+<img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/full.jpg" width="600"/>
