@@ -1,9 +1,8 @@
 use <snapButton.scad>;
 
-
-fingers();
-translate([-50, -150, 0])
-hand();
+//fingers();
+//translate([-50, -150, 0])
+handPlate();
 
 module fingers() {
   translate([0, -70, 0])
@@ -19,7 +18,7 @@ module fingers() {
 // lowerBottomDiam, lowerTopDiam, lowerLength,
 //          upperBottomDiam, upperTopDiam, upperLength
 module auriculaire() {
-  finger(20, 18, 33, 16, 15, 33);
+  printableFinger(20, 18, 33, 16, 15, 33, 8);
 }
 module annulaire() {
   printableFinger(23, 20, 34, 20, 16, 44);
@@ -32,25 +31,19 @@ module index() {
   //finger(24, 23, 33, 21, 16, 44);
 }
 
-module hand() {
-  handTop();
-  translate([0, -50, 0])
-    join();
-  translate([20, -50, 0])
-    join();
-  translate([40, -50, 0])
-    join();
-  translate([60, -50, 0])
-    join();
+// thin band to join the base of each finger to the hand top plate
+module join(width, length) {
+  color("yellow") {
+    pinWidth = 2.5;
+    cube([length - width/2, width, 0.3]);
+    translate([length - width/2, width/2, 0])
+      cylinder(d=width, h=0.3, $fn=40);
+    translate([length - 2*pinWidth, (width - pinWidth)/2, 0])
+      cube([pinWidth, pinWidth, 6]);
+  }
 }
 
-module join() {
-  cube([15, 46, 0.3]);
-  translate([6.25, 3])
-    cube([2.5, 2.5, 6]);
-}
-
-module handTop() {
+module handPlate() {
   z = 2;
   zThin = 0.3;
   A = [5, 45];
@@ -97,11 +90,11 @@ module crease(thin, width, topPoint, bottomPoint) {
 thickness = 1;
 hingeDiam = 3;
 module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength,
-                       upperBottomDiam, upperTopDiam, upperLength) {
+                       upperBottomDiam, upperTopDiam, upperLength, joinWidth=13, joinLength=35) {
 
-  lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
+  upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
   translate([lowerBottomDiam + 5, 0, 0])
-    upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
+    lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam, joinWidth, joinLength);
   translate([-40, 15, 0])
   rotate(90, [0, 0, 1])
   rotate(-10, [0, 1, 0])
@@ -109,8 +102,9 @@ module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength,
     claw(upperBottomDiam, upperTopDiam, upperLength);
 }
 
-module finger(lowerBottomDiam, lowerTopDiam, lowerLength, upperBottomDiam, upperTopDiam, upperLength) {
-  lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam);
+module finger(lowerBottomDiam, lowerTopDiam, lowerLength,
+                        upperBottomDiam, upperTopDiam, upperLength, joinWidth=13, joinLength=35) {
+  lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam, joinWidth, joinLength);
   translate([0, 0, lowerLength - 2* hingeDiam])
     upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
   translate([-3, 0, upperLength+2])
@@ -215,12 +209,31 @@ module upperFinger(innerBottomDiameter, innerTopDiameter, upperLength, thickness
 }
 
 
-module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength, thickness, hingeDiameter) {
+module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength,
+                         thickness, hingeDiameter, joinWidth, joinLength) {
   outerBottomDiameter = innerBottomDiameter + 2* thickness;
   outerTopDiameter = innerTopDiameter + 2* thickness;
 
   difference() {
-    cylinder(d1 = outerBottomDiameter, d2 = outerTopDiameter, h = lowerLength, $fn=100);
+    union() {
+      cylinder(d1 = outerBottomDiameter, d2 = outerTopDiameter, h = lowerLength, $fn=100);
+
+      // Flat zone to attach the band to join the hand plate
+      translate([0, -joinWidth/2, 0]) {
+        color("blue")
+        cube([outerBottomDiameter/2, joinWidth, joinWidth + 3]);
+        // Add a fake rivet on the flat zone
+        translate([outerBottomDiameter/2, joinWidth/2, (joinWidth + 3)/2])
+          rotate(90, [0, 1, 0])
+            cylinder(d=joinWidth-2, h=0.5, $fn=50);
+      }
+      // band to join the hand plate
+      translate([outerBottomDiameter/2, -joinWidth/2, 0]) {
+        join(joinWidth, joinLength);
+      }
+
+
+    }
     cylinder(d1 = innerBottomDiameter, d2 = innerTopDiameter, h = lowerLength, $fn=100);
 
     // Rounded cut in cylinder lower half, inner-hand
