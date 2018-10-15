@@ -1,8 +1,8 @@
 use <snapButton.scad>;
 
-//fingers();
-//translate([-50, -150, 0])
-handPlate();
+fingers();
+translate([-50, -150, 0])
+  handPlate();
 
 module fingers() {
   translate([0, -70, 0])
@@ -16,9 +16,10 @@ module fingers() {
 }
 
 // lowerBottomDiam, lowerTopDiam, lowerLength,
-//          upperBottomDiam, upperTopDiam, upperLength
+//          upperBottomDiam, upperTopDiam, upperLength,
+//               join band width, join band length
 module auriculaire() {
-  printableFinger(20, 18, 33, 16, 15, 33, 8);
+  printableFinger(20, 17, 33, 16, 15, 33, 8);
 }
 module annulaire() {
   printableFinger(23, 20, 34, 20, 16, 44);
@@ -27,20 +28,25 @@ module majeur() {
   printableFinger(24, 23, 40, 22, 16, 50);
 }
 module index() {
-  printableFinger(24, 23, 33, 21, 16, 44);
+  printableFinger(24, 22, 33, 21, 16, 44);
   //finger(24, 23, 33, 21, 16, 44);
 }
 
 // thin band to join the base of each finger to the hand top plate
 module join(width, length) {
+  pinWidth = 2.5;
   color("yellow") {
-    pinWidth = 2.5;
     cube([length - width/2, width, 0.3]);
     translate([length - width/2, width/2, 0])
       cylinder(d=width, h=0.3, $fn=40);
     translate([length - 2*pinWidth, (width - pinWidth)/2, 0])
       cube([pinWidth, pinWidth, 6]);
   }
+
+  // button to block it
+  // snapButtonFemale(baseDiam, baseH, pinDiam, pinZ, tolerance=0.3)
+  translate([length + 10 , width/2, 0])
+   snapButtonFemale(10, 1.8, pinWidth, 3, tolerance=0.2);
 }
 
 module handPlate() {
@@ -90,9 +96,9 @@ module crease(thin, width, topPoint, bottomPoint) {
 thickness = 1;
 hingeDiam = 3;
 module printableFinger(lowerBottomDiam, lowerTopDiam, lowerLength,
-                       upperBottomDiam, upperTopDiam, upperLength, joinWidth=13, joinLength=35) {
+                       upperBottomDiam, upperTopDiam, upperLength, joinWidth=13, joinLength=27) {
 
-  upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
+  //upperFinger(upperBottomDiam, upperTopDiam, upperLength, thickness, hingeDiam);
   translate([lowerBottomDiam + 5, 0, 0])
     lowerFinger(lowerBottomDiam, lowerTopDiam, lowerLength, thickness, hingeDiam, joinWidth, joinLength);
   translate([-40, 15, 0])
@@ -225,14 +231,12 @@ module lowerFinger(innerBottomDiameter, innerTopDiameter, lowerLength,
         // Add a fake rivet on the flat zone
         translate([outerBottomDiameter/2, joinWidth/2, (joinWidth + 3)/2])
           rotate(90, [0, 1, 0])
-            cylinder(d=joinWidth-2, h=0.5, $fn=50);
+            cylinder(d=joinWidth*0.7, h=1, $fn=50);
       }
       // band to join the hand plate
       translate([outerBottomDiameter/2, -joinWidth/2, 0]) {
         join(joinWidth, joinLength);
       }
-
-
     }
     cylinder(d1 = innerBottomDiameter, d2 = innerTopDiameter, h = lowerLength, $fn=100);
 
