@@ -9,7 +9,8 @@ Each finger can be easily parametered with 2 diameters for each half finger, the
 <img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/full.jpg" width="600"/>
 
 
-Here is the final print, using grey and bronze PLA, and wiping some acrylic paint on it so that it does no look to new.
+
+Here is the final print, using grey and bronze PLA, and wiping some acrylic paint on it so that it does not look to new.
 
 <img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/final.jpg" width="600"/>
 
