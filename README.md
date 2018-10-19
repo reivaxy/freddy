@@ -11,3 +11,6 @@ Each finger can be easily parametered.
 <img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/freddy.jpg" width="600"/>
 
 <img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/full.jpg" width="600"/>
+
+<img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/final.jpg" width="600"/>
+
