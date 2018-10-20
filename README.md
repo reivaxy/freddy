@@ -14,3 +14,8 @@ Here is the final print, using grey and bronze PLA, and wiping some acrylic pain
 
 <img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/final.jpg" width="600"/>
 
+
+Admittedly, the sweater needs some work :)
+
+<img src="https://raw.githubusercontent.com/reivaxy/freddy/master/resources/me.jpg" width="600"/>
+
